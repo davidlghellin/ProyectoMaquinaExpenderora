@@ -12,7 +12,7 @@ public class ActualizarDinero
 {
 
     private static DineroDAO dineroDao = new DineroDAO();
-
+private int a;
     public static float caja()
     {
         float total = 0f;
