@@ -13,7 +13,6 @@ import java.util.logging.Logger;
  */
 public class DineroDAO implements interfaceDineroDAO
 {
-
     
     private  Connection Conectar()
     {
@@ -31,7 +30,6 @@ public class DineroDAO implements interfaceDineroDAO
         return null;
     }
 
-    
     private void Desconectar(Connection conx)
     {
         try
@@ -214,7 +212,4 @@ public class DineroDAO implements interfaceDineroDAO
         return muchosdineros;
     }
 
-    
-
-    
 }
