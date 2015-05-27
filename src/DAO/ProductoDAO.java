@@ -17,9 +17,13 @@
  */
 package DAO;
 
-import dominio.Dinero;
-import inerfaceDAO.interfaceDineroDAO;
-import java.sql.*;
+import dominio.Producto;
+import inerfaceDAO.interfaceProductoDAO;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,10 +32,10 @@ import java.util.logging.Logger;
  *
  * @author David López González
  */
-public class DineroDAO implements interfaceDineroDAO
+public class ProductoDAO implements interfaceProductoDAO
 {
-    
-    private  Connection Conectar()
+
+    private Connection Conectar()
     {
         try
         {
@@ -59,7 +63,7 @@ public class DineroDAO implements interfaceDineroDAO
     }
 
     @Override
-    public void alta(Dinero d)
+    public void alta(Producto p)
     {
         Connection miConex = null;
 
@@ -67,16 +71,17 @@ public class DineroDAO implements interfaceDineroDAO
         {
             miConex = Conectar();
 
-            String misql = "INSERT INTO TDinero (Nombre,Existencias,Valor) VALUES(?,?,?);";
+            String misql = "INSERT INTO TProducto (Nombre,Descripcion,Precio,Existencias,Imagen) VALUES(?,?,?,?,?);";
             PreparedStatement ps = miConex.prepareStatement(misql);
-            ps.setString(1, d.getNombre());
-            ps.setInt(2, d.getExistencias());
-            ps.setFloat(3, d.getValor());
+            ps.setString(1, p.getNombre());
+            ps.setString(2, p.getNombre());
+            ps.setFloat(3, p.getPrecio());
+            ps.setInt(4, p.getExistencias());
+            ps.setBlob(5, p.getImagen());
 
             ps.executeUpdate();
         } catch (SQLException ex)
         {
-            System.out.println("errr");
             Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally
         {
@@ -92,7 +97,7 @@ public class DineroDAO implements interfaceDineroDAO
         try
         {
             miConex = Conectar();
-            String misql = "DELETE FROM TDinero WHERE Codigo = ?;";
+            String misql = "DELETE FROM TProducto WHERE Codigo = ?;";
             PreparedStatement ps = miConex.prepareStatement(misql);
             ps.setInt(1, codigo);
 
@@ -107,7 +112,7 @@ public class DineroDAO implements interfaceDineroDAO
     }
 
     @Override
-    public void modificacion(Dinero d)
+    public void modificacion(Producto p)
     {
         Connection miConex = null;
 
@@ -115,13 +120,15 @@ public class DineroDAO implements interfaceDineroDAO
         {
             miConex = Conectar();
 
-            String misql = "UPDATE TDinero SET Nombre=?,Existencias=?,Valor=? WHERE Codigo=?;";
+            String misql = "UPDATE TProducto SET Nombre=?,Descripcion=?,Precio=?,Existencias=?,Imagen=? WHERE Codigo=?;";
             PreparedStatement ps = miConex.prepareStatement(misql);
 
-            ps.setString(1, d.getNombre());
-            ps.setInt(2, d.getExistencias());
-            ps.setFloat(3, d.getValor());
-            ps.setInt(4, d.getCodigo());
+            ps.setString(1, p.getNombre());
+            ps.setString(2, p.getDescripcion());
+            ps.setFloat(3, p.getPrecio());
+            ps.setInt(4, p.getExistencias());
+            ps.setBlob(5, p.getImagen());
+            ps.setInt(6, p.getCodigo());
 
             ps.executeUpdate();
         } catch (SQLException ex)
@@ -134,26 +141,28 @@ public class DineroDAO implements interfaceDineroDAO
     }
 
     @Override
-    public Dinero consultar(String texto)
+    public Producto consultar(String texto)
     {
         Connection miConex = null;
-        Dinero dinero = null;
+        Producto producto = null;
 
         try
         {
-            dinero = new Dinero();
+            producto = new Producto();
             miConex = Conectar();
-            String misql = ("SELECT * FROM TDinero WHERE Nombre=?;");
+            String misql = ("SELECT * FROM TProducto WHERE Nombre=?;");
             PreparedStatement ps = miConex.prepareStatement(misql);
             ps.setString(1, texto);
             ResultSet consulta = ps.executeQuery();
 
             if (consulta.next())
             {
-                dinero.setCodigo(consulta.getInt("Codigo"));
-                dinero.setNombre(consulta.getString("Nombre"));
-                dinero.setExistencias(consulta.getInt("Existencias"));
-                dinero.setValor(consulta.getFloat("Valor"));
+                producto.setCodigo(consulta.getInt("Codigo"));
+                producto.setNombre(consulta.getString("Nombre"));
+                producto.setDescripcion(consulta.getString("Descripcion"));
+                producto.setPrecio(consulta.getFloat("Precio"));
+                producto.setExistencias(consulta.getInt("Existencias"));
+                producto.setImagen(consulta.getBlob("Imagen"));
             }
         } catch (SQLException ex)
         {
@@ -162,30 +171,32 @@ public class DineroDAO implements interfaceDineroDAO
         {
             Desconectar(miConex);
         }
-        return dinero;
+        return producto;
     }
-    
+
     @Override
-    public Dinero consultar(int num)
+    public Producto consultar(int num)
     {
         Connection miConex = null;
-        Dinero dinero = null;
+        Producto producto = null;
 
         try
         {
-            dinero = new Dinero();
+            producto = new Producto();
             miConex = Conectar();
-            String misql = ("SELECT * FROM TDinero WHERE Codigo=?;");
+            String misql = ("SELECT * FROM TProducto WHERE Codigo=?;");
             PreparedStatement ps = miConex.prepareStatement(misql);
             ps.setInt(1, num);
             ResultSet consulta = ps.executeQuery();
 
             if (consulta.next())
             {
-                dinero.setCodigo(consulta.getInt("Codigo"));
-                dinero.setNombre(consulta.getString("Nombre"));
-                dinero.setExistencias(consulta.getInt("Existencias"));
-                dinero.setValor(consulta.getFloat("Valor"));
+                producto.setCodigo(consulta.getInt("Codigo"));
+                producto.setNombre(consulta.getString("Nombre"));
+                producto.setDescripcion(consulta.getString("Descripcion"));
+                producto.setPrecio(consulta.getFloat("Precio"));
+                producto.setExistencias(consulta.getInt("Existencias"));
+                producto.setImagen(consulta.getBlob("Codigo"));
             }
         } catch (SQLException ex)
         {
@@ -194,30 +205,31 @@ public class DineroDAO implements interfaceDineroDAO
         {
             Desconectar(miConex);
         }
-        return dinero;
+        return producto;
     }
 
     @Override
-    public ArrayList<Dinero> consultarAll()
+    public ArrayList<Producto> consultarAll()
     {
         Connection miConex = null;
-        ArrayList<Dinero> muchosdineros = null;
-
+        ArrayList<Producto> muchosproductos = null;
         try
         {
             String misql = ("SELECT * FROM TDinero ;");
-            muchosdineros = new ArrayList<Dinero>();
+            muchosproductos = new ArrayList<Producto>();
             miConex = Conectar();
             PreparedStatement ps = miConex.prepareStatement(misql);
             ResultSet consulta = ps.executeQuery();
             while (consulta.next())
             {
-                Dinero dinero = new Dinero();
-                dinero.setCodigo(consulta.getInt("Codigo"));
-                dinero.setNombre(consulta.getString("Nombre"));
-                dinero.setExistencias(consulta.getInt("Existencias"));
-                dinero.setValor(consulta.getFloat("Valor"));
-                muchosdineros.add(dinero);
+                Producto producto = new Producto();
+                producto.setCodigo(consulta.getInt("Codigo"));
+                producto.setNombre(consulta.getString("Nombre"));
+                producto.setDescripcion(consulta.getString("Descripcion"));
+                producto.setPrecio(consulta.getFloat("Precio"));
+                producto.setExistencias(consulta.getInt("Existencias"));
+                producto.setImagen(consulta.getBlob("Codigo"));
+                muchosproductos.add(producto);
             }
         } catch (SQLException ex)
         {
@@ -226,7 +238,7 @@ public class DineroDAO implements interfaceDineroDAO
         {
             Desconectar(miConex);
         }
-        return muchosdineros;
+        return muchosproductos;
     }
 
 }

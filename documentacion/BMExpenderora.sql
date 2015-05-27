@@ -13,10 +13,10 @@ CREATE TABLE TProducto
 (
     Codigo      INT PRIMARY KEY AUTO_INCREMENT,
     Nombre      VARCHAR(20) NOT NULL,
-    Descripcion VARCHAR(100) ,
+    Descripcion VARCHAR(100),
     Precio      FLOAT NOT NULL,
     Existencias INT NOT NULL,
-    Imagen      MEDIUMBLOB NOT NULL
+    Imagen      MEDIUMBLOB 
 )CHARACTER SET utf8 COLLATE utf8_spanish_ci;
 
 INSERT INTO TDinero (Nombre,Existencias,Valor) VALUES ("Billete 5",10,2);   #20 €

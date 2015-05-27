@@ -17,19 +17,19 @@
  */
 package inerfaceDAO;
 
-import dominio.Dinero;
+import dominio.Producto;
 import java.util.ArrayList;
 
 /**
  *
  * @author David López González
  */
-public interface interfaceDineroDAO
+public interface interfaceProductoDAO
 {
-    public void alta(Dinero d);
+    public void alta(Producto p);
     public void baja(int codigo);
-    public void modificacion(Dinero d);
-    public Dinero consultar(String texto);
-    public Dinero consultar(int num);
-    public ArrayList<Dinero> consultarAll();
+    public void modificacion(Producto p);
+    public Producto consultar(String texto);
+    public Producto consultar(int num);
+    public ArrayList<Producto> consultarAll();
 }
