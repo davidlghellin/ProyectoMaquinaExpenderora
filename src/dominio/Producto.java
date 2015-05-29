@@ -18,6 +18,7 @@
 package dominio;
 
 import java.sql.Blob;
+import java.util.ArrayList;
 
 /**
  *
@@ -30,7 +31,8 @@ public class Producto
     private String descripcion;
     private float precio;
     private int existencias;
-    private Blob imagen;
+    private byte[] imagen;
+    private ArrayList<Movimientos> movimientos=new ArrayList();
 
     public Producto(){}
     public Producto(String nombre, String descripcion, float precio, int existencias)
@@ -40,20 +42,13 @@ public class Producto
         this.precio = precio;
         this.existencias = existencias;
     }
-    public Producto(String nombre, String descripcion, float precio, int existencias, Blob imagen)
+    
+    public Producto(String nombre, String descripcion, float precio, int existencias, byte[] imagen)
     {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.existencias = existencias;
-        this.imagen = imagen;
-    }
-    public Producto(String nombre, String descripcion, float precio, Blob imagen)
-    {
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.precio = precio;
-        this.existencias = 0;
         this.imagen = imagen;
     }
 
@@ -62,12 +57,20 @@ public class Producto
     public String getDescripcion(){return descripcion;}
     public float getPrecio()    {return precio;}
     public int getExistencias() {return existencias;}
-    public Blob getImagen()   {return imagen;}
+    public byte[] getImagen()   {return imagen;}
+    public ArrayList<Movimientos> getMovimientos(){return movimientos;}
+    
     public void setCodigo(int codigo){this.codigo = codigo;}
-    public void setNombre(String nombre){this.nombre = nombre;}
+    public void setNombre(String nombre){this.nombre = nombre;}   
     public void setDescripcion(String descripcion){this.descripcion = descripcion;}
     public void setPrecio(float precio){this.precio = precio;}
     public void setExistencias(int existencias){this.existencias = existencias;}
-    public void setImagen(Blob imagen){this.imagen = imagen;}    
+    public void setImagen(byte[] imagen){this.imagen = imagen;}    
+    public void setMovimientos(ArrayList<Movimientos> movimientos){this.movimientos = movimientos;}   
     
+    @Override
+    public String toString()
+    {
+        return "Producto{" + "codigo=" + codigo + ", nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio + ", existencias=" + existencias +  '}';
+    }
 }

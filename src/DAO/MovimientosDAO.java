@@ -17,11 +17,11 @@
  */
 package DAO;
 
+import dominio.Movimientos;
 import dominio.Producto;
 import inerfaceDAO.Conexion;
-import inerfaceDAO.interfaceProductoDAO;
+import inerfaceDAO.interfaceMovimientoDAO;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,11 +33,11 @@ import java.util.logging.Logger;
  *
  * @author David López González
  */
-public class ProductoDAO extends Conexion implements interfaceProductoDAO
+public class MovimientosDAO extends Conexion implements interfaceMovimientoDAO
 {
 
     @Override
-    public void alta(Producto p)
+    public void alta(Movimientos m)
     {
         Connection miConex = null;
 
@@ -45,13 +45,10 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
         {
             miConex = Conectar();
 
-            String misql = "INSERT INTO TProducto (Nombre,Descripcion,Precio,Existencias,Imagen) VALUES(?,?,?,?,?);";
+            String misql = "INSERT INTO TMovimientos (IdProducto,Cantidad) VALUES (?,?);";
             PreparedStatement ps = miConex.prepareStatement(misql);
-            ps.setString(1, p.getNombre());
-            ps.setString(2, p.getDescripcion());
-            ps.setFloat(3, p.getPrecio());
-            ps.setInt(4, p.getExistencias());
-            ps.setBytes(5, p.getImagen());
+            ps.setInt(1, m.getProducto().getCodigo());
+            ps.setInt(2, m.getCantidad());
 
             ps.executeUpdate();
         } catch (SQLException ex)
@@ -67,11 +64,10 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
     public void baja(int codigo)
     {
         Connection miConex = null;
-//eliminiar antes los movimientos
         try
         {
             miConex = Conectar();
-            String misql = "DELETE FROM TProducto WHERE Codigo = ?;";
+            String misql = "DELETE FROM TMovimientos WHERE IdMovimiento = ?;";
             PreparedStatement ps = miConex.prepareStatement(misql);
             ps.setInt(1, codigo);
 
@@ -84,25 +80,19 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
             Desconectar(miConex);
         }
     }
-
-    @Override
-    public void modificacion(Producto p)
+    /**
+     * Método para eliminar los movimientos asociados a un producto
+     * @param producto 
+     */
+    public void baja(Producto producto)
     {
         Connection miConex = null;
-
         try
         {
             miConex = Conectar();
-
-            String misql = "UPDATE TProducto SET Nombre=?,Descripcion=?,Precio=?,Existencias=?,Imagen=? WHERE Codigo=?;";
+            String misql = "DELETE FROM TMovimientos WHERE IdProducto = ?;";
             PreparedStatement ps = miConex.prepareStatement(misql);
-
-            ps.setString(1, p.getNombre());
-            ps.setString(2, p.getDescripcion());
-            ps.setFloat(3, p.getPrecio());
-            ps.setInt(4, p.getExistencias());
-            ps.setBytes(5, p.getImagen());
-            ps.setInt(6, p.getCodigo());
+            ps.setInt(1, producto.getCodigo());
 
             ps.executeUpdate();
         } catch (SQLException ex)
@@ -115,28 +105,55 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
     }
 
     @Override
-    public Producto consultar(String texto)
+    public void modificacion(Movimientos m)
     {
         Connection miConex = null;
-        Producto producto = null;
 
         try
         {
-            producto = new Producto();
             miConex = Conectar();
-            String misql = ("SELECT * FROM TProducto WHERE Nombre=?;");
+
+            String misql = "UPDATE TMovimientos SET Cantidad=? WHERE IdMovimiento=?;";
             PreparedStatement ps = miConex.prepareStatement(misql);
-            ps.setString(1, texto);
+
+            ps.setInt(1, m.getCantidad());
+            ps.setInt(2, m.getId());
+
+            ps.executeUpdate();
+        } catch (SQLException ex)
+        {
+            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally
+        {
+            Desconectar(miConex);
+        }
+    }
+
+    @Override
+    public Movimientos consultar(int idMovientos)
+    {
+        Connection miConex = null;
+        Movimientos movimientos = null;
+
+        try
+        {
+            movimientos = new Movimientos();
+            miConex = Conectar();
+            String misql = ("SELECT * FROM TMovimientos WHERE IdMovimiento=?;");
+            PreparedStatement ps = miConex.prepareStatement(misql);
+            ps.setInt(1, idMovientos);
             ResultSet consulta = ps.executeQuery();
 
             if (consulta.next())
             {
-                producto.setCodigo(consulta.getInt("Codigo"));
-                producto.setNombre(consulta.getString("Nombre"));
-                producto.setDescripcion(consulta.getString("Descripcion"));
-                producto.setPrecio(consulta.getFloat("Precio"));
-                producto.setExistencias(consulta.getInt("Existencias"));
-                producto.setImagen(consulta.getBytes("Imagen"));
+                movimientos.setId(consulta.getInt("IdMovimiento"));
+                movimientos.setFecha(consulta.getDate("Fecha"));
+                
+                ProductoDAO pdao=new ProductoDAO();
+                Producto p=pdao.consultar(consulta.getInt("IdProducto"));
+                movimientos.setProducto((Producto)p);
+                
+                movimientos.setCantidad(consulta.getInt("Cantidad"));
             }
         } catch (SQLException ex)
         {
@@ -145,65 +162,29 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
         {
             Desconectar(miConex);
         }
-        return producto;
+        return movimientos;
     }
 
     @Override
-    public Producto consultar(int num)
+    public ArrayList<Movimientos> consultarAll(Producto producto)
     {
-        Connection miConex = null;
-        Producto producto = null;
-
+    Connection miConex = null;
+        ArrayList<Movimientos> muchosMovimientos = null;
         try
         {
-            producto = new Producto();
-            miConex = Conectar();
-            String misql = ("SELECT * FROM TProducto WHERE Codigo=?;");
-            PreparedStatement ps = miConex.prepareStatement(misql);
-            ps.setInt(1, num);
-            ResultSet consulta = ps.executeQuery();
-
-            if (consulta.next())
-            {
-                producto.setCodigo(consulta.getInt("Codigo"));
-                producto.setNombre(consulta.getString("Nombre"));
-                producto.setDescripcion(consulta.getString("Descripcion"));
-                producto.setPrecio(consulta.getFloat("Precio"));
-                producto.setExistencias(consulta.getInt("Existencias"));
-                producto.setImagen(consulta.getBytes("Imagen"));
-            }
-        } catch (SQLException ex)
-        {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally
-        {
-            Desconectar(miConex);
-        }
-        return producto;
-    }
-
-    @Override
-    public ArrayList<Producto> consultarAll()
-    {
-        Connection miConex = null;
-        ArrayList<Producto> muchosproductos = null;
-        try
-        {
-            String misql = ("SELECT * FROM TProducto ;");
-            muchosproductos = new ArrayList<Producto>();
+            String misql = ("SELECT * FROM TMovimientos ;");
+            muchosMovimientos = new ArrayList<Movimientos>();
             miConex = Conectar();
             PreparedStatement ps = miConex.prepareStatement(misql);
             ResultSet consulta = ps.executeQuery();
             while (consulta.next())
             {
-                Producto producto = new Producto();
-                producto.setCodigo(consulta.getInt("Codigo"));
-                producto.setNombre(consulta.getString("Nombre"));
-                producto.setDescripcion(consulta.getString("Descripcion"));
-                producto.setPrecio(consulta.getFloat("Precio"));
-                producto.setExistencias(consulta.getInt("Existencias"));
-                producto.setImagen(consulta.getBytes("Imagen"));
-                muchosproductos.add(producto);
+                Movimientos movimientos = new Movimientos();
+                movimientos.setFecha(consulta.getDate("Fecha"));
+                movimientos.setId(consulta.getInt("IdMovimiento"));
+                movimientos.setCantidad(consulta.getInt("Cantidad"));
+                movimientos.setProducto(producto);
+                muchosMovimientos.add(movimientos);
             }
         } catch (SQLException ex)
         {
@@ -212,7 +193,7 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
         {
             Desconectar(miConex);
         }
-        return muchosproductos;
+        return muchosMovimientos;
     }
 
 }

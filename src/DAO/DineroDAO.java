@@ -18,6 +18,7 @@
 package DAO;
 
 import dominio.Dinero;
+import inerfaceDAO.Conexion;
 import inerfaceDAO.interfaceDineroDAO;
 import java.sql.*;
 import java.util.ArrayList;
@@ -28,36 +29,9 @@ import java.util.logging.Logger;
  *
  * @author David López González
  */
-public class DineroDAO implements interfaceDineroDAO
+public class DineroDAO extends Conexion implements interfaceDineroDAO
 {
     
-    private  Connection Conectar()
-    {
-        try
-        {
-            Class.forName("com.mysql.jdbc.Driver");
-            return DriverManager.getConnection("jdbc:mysql://localhost/BMExpendedora", "root", "root");
-        } catch (SQLException ex)
-        {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex)
-        {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    private void Desconectar(Connection conx)
-    {
-        try
-        {
-            conx.close();
-        } catch (SQLException ex)
-        {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     @Override
     public void alta(Dinero d)
     {
