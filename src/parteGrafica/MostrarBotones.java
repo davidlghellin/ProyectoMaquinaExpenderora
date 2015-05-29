@@ -46,7 +46,7 @@ public class MostrarBotones
         System.out.println(misProductos.size());
         try
         {
-            for (int j = 0; j < misProductos.size(); j++)
+            for (int j = 0; j < misProductos.size()&&j<botones.length; j++)
             {
                 botones[j].setName(misProductos.get(j).getCodigo() + "");
                 System.out.println(botones[j].getName() + "");
