@@ -81,10 +81,8 @@ public class MaquinaRoot extends JFrame
             @Override
             public void actionPerformed(ActionEvent ae)
             {
-                jtfNumProd.setText(jcb.getSelectedItem().toString());
-                
-                Producto p = productoDAO.consultar(jcb.getSelectedItem().toString());
-                //quiero buscar por codigo
+                Producto p = (Producto)jcb.getSelectedItem();
+                System.out.println(p.getDescripcion());
                 MovimientosDAO movimientoDAO = new MovimientosDAO();
                 movimientoDAO.alta(new Movimientos(p, Integer.parseInt(jtfNumProd.getText())));
             }
@@ -218,9 +216,7 @@ public class MaquinaRoot extends JFrame
         ArrayList<Producto> misProductos = productoDAO.consultarAll();
         for (Producto p : misProductos)
         {
-            jcb.addItem(p.getNombre());
-            //necesito poner al item el id, para poder buscarlo
-            jcb.setName(p.getCodigo() + "");
+            jcb.addItem(p);
         }
     }
     
