@@ -18,16 +18,17 @@
 package parteGrafica;
 
 import DAO.DineroDAO;
-import DAO.MovimientosDAO;
 import DAO.ProductoDAO;
 import dominio.Dinero;
-import dominio.Movimientos;
 import dominio.Producto;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -37,6 +38,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import static parteGrafica.MaquinaRoot.listxt;
 import static parteGrafica.MaquinaRoot.retirarDinero;
+import publico.ActualizarProductos;
 
 /**
  *
@@ -77,14 +79,18 @@ public class MaquinaRoot extends JFrame
         JButton btnIntroProd = new JButton("Reponer");
         btnIntroProd.addActionListener(new ActionListener()
         {
-            
+            // Reponemos productos seleccionados
             @Override
             public void actionPerformed(ActionEvent ae)
             {
                 Producto p = (Producto)jcb.getSelectedItem();
-                System.out.println(p.getDescripcion());
-                MovimientosDAO movimientoDAO = new MovimientosDAO();
-                movimientoDAO.alta(new Movimientos(p, Integer.parseInt(jtfNumProd.getText())));
+                try
+                {
+                    ActualizarProductos.meterProducto(p, Integer.parseInt(jtfNumProd.getText()));
+                } catch (IOException ex)
+                {
+                    Logger.getLogger(MaquinaRoot.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         pproducto.add(btnIntroProd);
@@ -94,7 +100,6 @@ public class MaquinaRoot extends JFrame
         pproducto.add(bNuevoProducto);
         bNuevoProducto.addActionListener(new ActionListener()
         {
-            
             @Override
             public void actionPerformed(ActionEvent ae)
             {
@@ -219,5 +224,4 @@ public class MaquinaRoot extends JFrame
             jcb.addItem(p);
         }
     }
-    
 }

@@ -17,27 +17,30 @@
  */
 package pruebas;
 
-import DAO.DineroDAO;
-import dominio.Dinero;
-import publico.ActualizarDinero;
+import DAO.MovimientosDAO;
+import dominio.Movimientos;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
  * @author David López González
  */
-public class pDinero
+public class NewClass
 {
 
     public static void main(String[] args)
     {
-        //DineroDAO dineroDao=new DineroDAO();
-        //dineroDao.alta(new Dinero( "dolar",3, 0.3f));
-        //dineroDao.baja(8);
-        //Dinero di=dineroDao.consultar(2);
-        //System.out.println(di.getNombre());
-        // ActualizarDinero.pagar(2);
-        //ActualizarDinero.retirar2E(10);
-        //System.out.println(ActualizarDinero.caja());
-        ActualizarDinero.pagarCaja(1.2f,1.4f);
+        //System.out.println(new Date());
+//        ProductoDAO productoDAO=new ProductoDAO();
+//        Producto p=productoDAO.consultar(1);
+//        ActualizarProductos.meterProducto(p, 2);
+        MovimientosDAO movDAO = new MovimientosDAO();
+        Movimientos m = movDAO.consultar(12);
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE MMMM d HH:mm:ss z yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE d MMMM yyyy");
+        System.out.println(dateFormat.format(m.getFecha()));
+
     }
+
 }

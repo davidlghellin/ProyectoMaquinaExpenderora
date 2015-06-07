@@ -26,6 +26,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -148,7 +150,6 @@ public class MovimientosDAO extends Conexion implements interfaceMovimientoDAO
             {
                 movimientos.setId(consulta.getInt("IdMovimiento"));
                 movimientos.setFecha(consulta.getDate("Fecha"));
-                
                 ProductoDAO pdao=new ProductoDAO();
                 Producto p=pdao.consultar(consulta.getInt("IdProducto"));
                 movimientos.setProducto((Producto)p);

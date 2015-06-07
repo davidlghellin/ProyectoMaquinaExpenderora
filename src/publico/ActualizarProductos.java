@@ -21,6 +21,7 @@ import DAO.MovimientosDAO;
 import DAO.ProductoDAO;
 import dominio.Movimientos;
 import dominio.Producto;
+import java.io.IOException;
 
 /**
  *
@@ -29,6 +30,10 @@ import dominio.Producto;
 public class ActualizarProductos
 {
 
+    /**
+     * Retiramos una unidad del producto p de la base de datos
+     * @param p Producto a retirar una unidad de la base de datos
+     */
     public static void sacarProducto(Producto p)
     {
         MovimientosDAO moviDAO = new MovimientosDAO();
@@ -39,11 +44,19 @@ public class ActualizarProductos
         proDAO.modificacion(p);
     }
 
-    public static void meterProducto(Producto p, int cantidad)
+    /**
+     * Método que introduce una cantidad de productos en la base de datos
+     * @param p
+     * @param cantidad
+     * @throws IOException 
+     */
+    public static void meterProducto(Producto p, int cantidad) throws IOException
     {
         MovimientosDAO moviDAO = new MovimientosDAO();
         ProductoDAO proDAO = new ProductoDAO();
-        moviDAO.alta(new Movimientos(p, cantidad));
+        Movimientos m = new Movimientos(p, cantidad);
+        log.CrearLog.log(m);
+        moviDAO.alta(m);
         int n = p.getExistencias() + cantidad;
         p.setExistencias(n);
         proDAO.modificacion(p);

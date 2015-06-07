@@ -72,10 +72,9 @@ public class Imagen
     }
 
     /**
-     * método para pasar una byte[] en una imagen
+     * Método para pasar una byte[] en una imagen
      *
      * @param bytes
-     * @param isThumbnail
      * @return
      * @throws IOException
      */

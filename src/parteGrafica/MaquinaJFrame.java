@@ -25,7 +25,6 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -34,6 +33,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import publico.ActualizarDinero;
+import publico.ActualizarProductos;
 
 /**
  *
@@ -58,9 +59,23 @@ public class MaquinaJFrame extends JFrame
     private static final JPanel panel = new JPanel();
     private static final JPanel panel2 = new JPanel(new GridLayout(MAX_NUMERO_PRODUCTOS, 1));
     // Area de texto para mostrar las salidas 
-    private static final JTextArea info = new JTextArea(5, 20);
+    private static final JPanel panelinfo = new JPanel(new GridLayout(1, 2));
+    private static final JTextArea info = new JTextArea();
+    private static final JTextArea info2 = new JTextArea();
     // 16 Botones como máximo, solamente mostraremos los que contengan elemento
     private static final JButton[] botones = new JButton[MAX_NUMERO_PRODUCTOS];
+    // Botones de monedas y cancelar
+    private static JButton[] botonesMonedas;
+
+    // Precio del producto
+    private static int precioProducto = 0;
+    private static int dineroPagado = 0;
+    // Boolean que indica si a escogido el producto y si además quedan en la máquina
+    private static boolean boolProducto = false;
+    // Numero de monedas
+    private static int[] cantidadMonedas = new int[6];
+    // Codigo del producto selecionado
+    private static int codigoPoducto;
 
     /*
      * Evento que nos servira para añadir a los botones para obtener
@@ -72,8 +87,50 @@ public class MaquinaJFrame extends JFrame
         public void actionPerformed(ActionEvent ae)
         {
             Producto p = (proDAO.consultar(Integer.parseInt(((JButton) ae.getSource()).getName())));
-            info.setText("" + p.getNombre());
-            info.append("\n" + p.getPrecio());
+            if (p.getExistencias() > 0)
+            {
+                info.setText("" + p.getNombre());
+                codigoPoducto = p.getCodigo();
+                info.append("\n" + p.getPrecio());
+                precioProducto = (int) (p.getPrecio() * 100);
+                info.append("\n" + precioProducto);
+                boolProducto = true;
+            }
+            else
+            {
+                info.setText("Producto agotado");
+            }
+        }
+    };
+    ActionListener mostrarDinero = new ActionListener()
+    {
+        @Override
+        public void actionPerformed(ActionEvent ae)
+        {
+            if (boolProducto)
+            {   // Si tenemos producto seleccionado y además quedan existencias. 
+                System.out.println(Integer.parseInt(((JButton) ae.getSource()).getName()) + 1);
+                Dinero d = (dineroDao.consultar(Integer.parseInt(((JButton) ae.getSource()).getName()) + 1));
+                dineroPagado += (int) (d.getValor() * 100);
+                cantidadMonedas[Integer.parseInt(((JButton) ae.getSource()).getName())]++;
+
+                info2.setText("Total pagado:\n" + (float) (dineroPagado / 100f) + " €");
+                if (dineroPagado < precioProducto) // Todavía falta dinero
+                {
+                    info2.append("\nFalta: " + (float) ((precioProducto - dineroPagado) / 100f) + "€");
+                }
+                else    // Se efectua la venta decrementando el producto 
+                {
+                    for (int i = 0; i < botonesMonedas.length - 1; i++)
+                    {
+                        botonesMonedas[i].setEnabled(false);
+                    }
+                    // XXXX Actualizar dineros
+                    ActualizarDinero.pagarCaja(precioProducto, dineroPagado);
+                    botonesMonedas[botonesMonedas.length - 1].setText("Aceptar");
+                    info2.append("\nRecoja su cambio: " + (float) ((precioProducto - dineroPagado) / 100f) + "€");
+                }
+            }
         }
     };
 
@@ -96,44 +153,69 @@ public class MaquinaJFrame extends JFrame
         info.setEditable(false);
         info.setBackground(Color.GREEN);
         info.setText("Escoja su producto");
-        //panel.add(BorderLayout.NORTH, info);
-        panel.add(info);
+        info2.setText("Inserte la moneda");
+        panelinfo.add(info);
+        panelinfo.add(info2);
+        panel.add(panelinfo);
         panel.setLayout(new GridLayout(8, 1));
-        JButton[] botonesMonedas = new JButton[7];
-        ponerBotonesMondeas(panel, botonesMonedas);
 
-        // Creamos los botones y le añadimos los ActionListener
+        // Botones para las monedas
+        botonesMonedas = new JButton[7];
+        // Creamos los botones
+        for (int i = 0; i < botonesMonedas.length; i++)
+        {
+            botonesMonedas[i] = new JButton();
+        }
+        // Pintamos los botones
+        MostrarBotones.ponerBotonesMondeas(panel, botonesMonedas);
+        // Añadimos a los botones de las monedas la funcionalidad de pulsar
+        for (int i = 0; i < botonesMonedas.length - 1; i++)
+        {
+            botonesMonedas[i].addActionListener(mostrarDinero);
+        }
+        // Boton de cancelar de las monedas, ponemos el dinero que se a  introducido a 0
+        botonesMonedas[botonesMonedas.length - 1].addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                dineroPagado = 0;
+                for (int m : cantidadMonedas)
+                {
+                    m = 0;
+                }
+                // Seteamos a la configuración inicial
+                info2.setText("Inserte la moneda");
+                if (((JButton) ae.getSource()).getText().equals("Aceptar"))
+                {   // Se ha producido la venta debemos devolver e insertar en la maquina
+                    for (int i = 0; i < botonesMonedas.length - 1; i++)
+                    {
+                        botonesMonedas[i].setEnabled(true);
+                    }
+                    botonesMonedas[botonesMonedas.length - 1].setText("Cancelar");
+                    // Valores por defecto
+                    info.setText("Escoja su producto");
+                    boolProducto = false;
+                    // Actualirzamos producto
+                    ProductoDAO pDAO = new ProductoDAO();
+                    Producto pro = pDAO.consultar(codigoPoducto);
+                    ActualizarProductos.sacarProducto(pro);
+
+                }
+            }
+        });
+
+        // Creamos los botones de las bebidas y le añadimos los ActionListener
         for (int i = 0; i < botones.length; i++)
         {
             botones[i] = new JButton();
             botones[i].addActionListener(mostrarPrecio);
+
         }
         /*
-         * Pintamos los botones, mostraremos los botones que contengan solamente imagen
+         * Pintamos los botones de las bebidas, mostraremos los botones que contengan solamente imagen
          */
-        MostrarBotones.pintarBotones(botones, panel2);
-    }
-
-    private static void ponerBotonesMondeas(JPanel panel, JButton[] botones)
-    {
-        int i = 0;
-        ArrayList<Dinero> dineros = dineroDao.consultarAll();
-        try
-        {
-            for (JButton b : botones)
-            {
-                b = new JButton();
-                b.setText(dineros.get(i).getNombre() + "");
-                b.setName((i++) + "");
-                panel.add(b);
-            }
-        } catch (Exception e)
-        {
-
-        }
-        botones[botones.length - 1] = new JButton();
-        botones[botones.length - 1].setText("Cancelar");
-        panel.add(botones[botones.length - 1]);
+        MostrarBotones.pintarBotonesProductos(botones, panel2);
     }
 
     public static void ponerActionMenu()

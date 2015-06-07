@@ -17,9 +17,13 @@
  */
 package parteGrafica;
 
+import DAO.DineroDAO;
 import DAO.ProductoDAO;
+import dominio.Dinero;
 import dominio.Producto;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -38,7 +42,44 @@ import utils.Imagen;
 public class MostrarBotones
 {
 
-    public static void pintarBotones(JButton[] botones, JPanel panel2)
+    /**
+     * Método para pintar los botones y asociar el nombre a los botones. Se
+     * pintarán los botones en un JPanel
+     *
+     * @param panel JPanel donde se pintarán los botones
+     * @param botones JButton[] para añadirle las propiedades asociadas
+     */
+    public static void ponerBotonesMondeas(JPanel panel, JButton[] botones)
+    {
+        DineroDAO dineroDao = new DineroDAO();
+        int i = 0;
+        ArrayList<Dinero> dineros = dineroDao.consultarAll();
+        try
+        {
+            for (JButton b : botones)
+            {
+                //b = new JButton();
+                b.setText(dineros.get(i).getNombre() + "");
+                b.setName((i++) + "");
+                panel.add(b);
+            }
+        } catch (Exception e)
+        {
+
+        }
+        botones[botones.length - 1] = new JButton();
+        botones[botones.length - 1].setText("Cancelar");
+        panel.add(botones[botones.length - 1]);
+    }
+
+    /**
+     * Método para pintar los botones y asociar el nombre a los botones. Se
+     * pintarán los botones en un JPanel
+     *
+     * @param botones
+     * @param panel2
+     */
+    public static void pintarBotonesProductos(JButton[] botones, JPanel panel2)
     {
 
         ProductoDAO proDAO = new ProductoDAO();
@@ -46,7 +87,7 @@ public class MostrarBotones
         System.out.println(misProductos.size());
         try
         {
-            for (int j = 0; j < misProductos.size()&&j<botones.length; j++)
+            for (int j = 0; j < misProductos.size() && j < botones.length; j++)
             {
                 botones[j].setName(misProductos.get(j).getCodigo() + "");
                 System.out.println(botones[j].getName() + "");

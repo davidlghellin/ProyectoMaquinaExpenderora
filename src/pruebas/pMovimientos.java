@@ -20,8 +20,11 @@ package pruebas;
 import DAO.MovimientosDAO;
 import DAO.ProductoDAO;
 import dominio.Movimientos;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import publico.ActualizarProductos;
 
 /**
@@ -35,7 +38,7 @@ public class pMovimientos
     {
         MovimientosDAO dao = new MovimientosDAO();
         ProductoDAO pdao = new ProductoDAO();
-        //dao.alta(new Movimientos(pdao.consultar(2), 55));
+        dao.alta(new Movimientos(pdao.consultar(2), 55));
         Movimientos m = dao.consultar(1);
         System.out.println(m.getProducto());
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -54,7 +57,13 @@ public class pMovimientos
         System.out.println(pdao.consultar(2).getExistencias());
         System.out.println("____");
         System.out.println("____");
-        ActualizarProductos.meterProducto(pdao.consultar(2), 10);
+        try
+        {
+            ActualizarProductos.meterProducto(pdao.consultar(2), 10);
+        } catch (IOException ex)
+        {
+            Logger.getLogger(pMovimientos.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.out.println(pdao.consultar(2).getExistencias());
     }
 
