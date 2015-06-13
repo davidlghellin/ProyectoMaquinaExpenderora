@@ -144,7 +144,7 @@ public class ActualizarDinero
      * @param precio precio del producto
      * @param dinero dinero insertado en la máquina
      */
-    public static void pagarCaja(int precio, int dinero)
+    public static int[] pagarCaja(int precio, int dinero)
     {
         ArrayList<Dinero> cartera = new ArrayList<Dinero>();
         cartera = dineroDao.consultarAll();
@@ -210,6 +210,7 @@ public class ActualizarDinero
         {
             auxpagar(i++, -n);
         }
+        return monedas;
     }
     
     

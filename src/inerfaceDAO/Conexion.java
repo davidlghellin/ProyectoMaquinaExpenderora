@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 public abstract class Conexion
 {   
     /**
-     * método para conectar, cambiando el nombre de la base de datos, usu, pass
+     * Método para conectar, cambiando el nombre de la base de datos, usu, pass
      * usando el driver de MySql JDBC
      * @return
      */

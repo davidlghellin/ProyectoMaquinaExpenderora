@@ -25,6 +25,9 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -33,6 +36,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 import publico.ActualizarDinero;
 import publico.ActualizarProductos;
 
@@ -76,6 +81,10 @@ public class MaquinaJFrame extends JFrame
     private static int[] cantidadMonedas = new int[6];
     // Codigo del producto selecionado
     private static int codigoPoducto;
+
+    // Informes
+    JasperReport jasperReport;
+    JasperPrint jasperPrint;
 
     /*
      * Evento que nos servira para añadir a los botones para obtener
@@ -126,9 +135,29 @@ public class MaquinaJFrame extends JFrame
                         botonesMonedas[i].setEnabled(false);
                     }
                     // XXXX Actualizar dineros
-                    ActualizarDinero.pagarCaja(precioProducto, dineroPagado);
+                    int monedas[] = ActualizarDinero.pagarCaja(precioProducto, dineroPagado);
                     botonesMonedas[botonesMonedas.length - 1].setText("Aceptar");
-                    info2.append("\nRecoja su cambio: " + (float) ((precioProducto - dineroPagado) / 100f) + "€");
+                    info2.setText("Recoja su cambio: " + (float) ((precioProducto - dineroPagado) / 100f) + "€\n");
+                    if (monedas[1] > 0)
+                    {
+                        info2.append(monedas[1] + "monedas de 2€, ");
+                    }
+                    if (monedas[2] > 0)
+                    {
+                        info2.append(monedas[2] + "monedas de 1€, ");
+                    }
+                    if (monedas[3] > 0)
+                    {
+                        info2.append(monedas[3] + "monedas de 0.5€, ");
+                    }
+                    if (monedas[4] > 0)
+                    {
+                        info2.append(monedas[4] + "monedas de 0.2€, ");
+                    }
+                    if (monedas[5] > 0)
+                    {
+                        info2.append(monedas[5] + "monedas de 0.1€, ");
+                    }
                 }
             }
         }
@@ -143,6 +172,7 @@ public class MaquinaJFrame extends JFrame
         f.add(menuInforme);
         f.add(menuSalir);
         ponerActionMenu();
+        informes();
 
         //establemos el layout para añadir dos paneles 
         setLayout(new GridLayout(1, 2));
@@ -218,30 +248,52 @@ public class MaquinaJFrame extends JFrame
         MostrarBotones.pintarBotonesProductos(botones, panel2);
     }
 
+    public static void informes()
+    {
+        menuInforme.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                String contraseña = JOptionPane.showInputDialog("Intoduzca la contraseña");
+                if (contraseña.equals("root"))
+                {
+                    try
+                    {
+                        informes.informeMovimiento.main(null);
+                        informes.informeProducto.main(null);
+                    } catch (SQLException ex)
+                    {
+                        Logger.getLogger(MaquinaJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+    }
+
     public static void ponerActionMenu()
     {
         menuRoot.addActionListener(new ActionListener()
         {
-
             @Override
             public void actionPerformed(ActionEvent ae)
             {
                 String contraseña = JOptionPane.showInputDialog("Intoduzca la contraseña");
                 System.out.println(contraseña);
-//                if (contraseña.equals("root"))
-//                {
-//                    new MaquinaRoot();
-//                }
-                new MaquinaRoot();
+                if (contraseña.equals("root"))
+                {
+                    new MaquinaRoot();
+                }
             }
         });
+        // TODO Generar informe
+        menuInforme.addActionListener(null);
+
         menuSalir.addActionListener(new ActionListener()
         {
-
             @Override
             public void actionPerformed(ActionEvent ae)
             {
-                System.out.println("sal");
                 System.exit(0);
             }
         });

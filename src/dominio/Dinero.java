@@ -18,13 +18,6 @@ public class Dinero
     private float valor;
     
     public Dinero(){}
-    public Dinero(int codigo, String nombre, int existencias,float valor)
-    {
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.existencias = existencias;
-        this.valor=valor;
-    }
     public Dinero( String nombre, int existencias,float valor)
     {
         this.nombre = nombre;

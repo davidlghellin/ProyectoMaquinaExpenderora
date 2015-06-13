@@ -22,8 +22,6 @@ import inerfaceDAO.Conexion;
 import inerfaceDAO.interfaceDineroDAO;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -31,7 +29,7 @@ import java.util.logging.Logger;
  */
 public class DineroDAO extends Conexion implements interfaceDineroDAO
 {
-    
+
     @Override
     public void alta(Dinero d)
     {
@@ -50,8 +48,7 @@ public class DineroDAO extends Conexion implements interfaceDineroDAO
             ps.executeUpdate();
         } catch (SQLException ex)
         {
-            System.out.println("errr");
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error en el alta:" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);
@@ -73,8 +70,8 @@ public class DineroDAO extends Conexion implements interfaceDineroDAO
             ps.executeUpdate();
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally
+        System.err.println("Error al borrar una tupla:" + ex.getMessage());
+       } finally
         {
             Desconectar(miConex);
         }
@@ -88,7 +85,6 @@ public class DineroDAO extends Conexion implements interfaceDineroDAO
         try
         {
             miConex = Conectar();
-
             String misql = "UPDATE TDinero SET Nombre=?,Existencias=?,Valor=? WHERE Codigo=?;";
             PreparedStatement ps = miConex.prepareStatement(misql);
 
@@ -100,7 +96,7 @@ public class DineroDAO extends Conexion implements interfaceDineroDAO
             ps.executeUpdate();
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error al actualizar:" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);
@@ -131,14 +127,14 @@ public class DineroDAO extends Conexion implements interfaceDineroDAO
             }
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error en la consulta:" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);
         }
         return dinero;
     }
-    
+
     @Override
     public Dinero consultar(int num)
     {
@@ -163,7 +159,7 @@ public class DineroDAO extends Conexion implements interfaceDineroDAO
             }
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+             System.err.println("Error en la consulta:" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);
@@ -195,8 +191,8 @@ public class DineroDAO extends Conexion implements interfaceDineroDAO
             }
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally
+             System.err.println("Error en la consulta de todos:" + ex.getMessage());
+         } finally
         {
             Desconectar(miConex);
         }

@@ -79,7 +79,8 @@ public class CrearLog
         // SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE MMMM d HH:mm:ss z yyyy");
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss d/MM/yyyy");
         sb.append("[").append(dateFormat.format(new Date())).append("] ")
-               .append(m.getProducto().getNombre()+" ").append(m.getCantidad()).append("\n");
+                .append(m.getProducto().getNombre() + ": ")
+                .append(m.getProducto().getCodigo() + " Unidades: ").append(m.getCantidad()).append("\n");
         try
         {
             fichero = new RandomAccessFile(new File("./log/logReponedor.log"), "rw");

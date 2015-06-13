@@ -15,32 +15,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package pruebas;
+package PrimerosPasos;
 
-import DAO.MovimientosDAO;
-import dominio.Movimientos;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.IOException;
 
 /**
  *
  * @author David López González
  */
-public class NewClass
+public class CrearLog
 {
-
-    public static void main(String[] args)
+    public static void main(String[] args) throws IOException
     {
-        //System.out.println(new Date());
-//        ProductoDAO productoDAO=new ProductoDAO();
-//        Producto p=productoDAO.consultar(1);
-//        ActualizarProductos.meterProducto(p, 2);
-        MovimientosDAO movDAO = new MovimientosDAO();
-        Movimientos m = movDAO.consultar(12);
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE MMMM d HH:mm:ss z yyyy");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE d MMMM yyyy");
-        System.out.println(dateFormat.format(m.getFecha()));
-
+        log.CrearLog.iniLog();
     }
-
 }

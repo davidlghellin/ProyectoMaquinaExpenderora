@@ -26,11 +26,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author David López González
@@ -55,7 +50,7 @@ public class MovimientosDAO extends Conexion implements interfaceMovimientoDAO
             ps.executeUpdate();
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error en el alta:" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);
@@ -66,6 +61,7 @@ public class MovimientosDAO extends Conexion implements interfaceMovimientoDAO
     public void baja(int codigo)
     {
         Connection miConex = null;
+        
         try
         {
             miConex = Conectar();
@@ -76,19 +72,22 @@ public class MovimientosDAO extends Conexion implements interfaceMovimientoDAO
             ps.executeUpdate();
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error al borrar:" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);
         }
     }
+
     /**
      * Método para eliminar los movimientos asociados a un producto
-     * @param producto 
+     *
+     * @param producto
      */
     public void baja(Producto producto)
     {
         Connection miConex = null;
+        
         try
         {
             miConex = Conectar();
@@ -99,7 +98,7 @@ public class MovimientosDAO extends Conexion implements interfaceMovimientoDAO
             ps.executeUpdate();
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error al borrar:" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);
@@ -124,7 +123,7 @@ public class MovimientosDAO extends Conexion implements interfaceMovimientoDAO
             ps.executeUpdate();
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error al actualizar" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);
@@ -150,15 +149,15 @@ public class MovimientosDAO extends Conexion implements interfaceMovimientoDAO
             {
                 movimientos.setId(consulta.getInt("IdMovimiento"));
                 movimientos.setFecha(consulta.getDate("Fecha"));
-                ProductoDAO pdao=new ProductoDAO();
-                Producto p=pdao.consultar(consulta.getInt("IdProducto"));
-                movimientos.setProducto((Producto)p);
-                
+                ProductoDAO pdao = new ProductoDAO();
+                Producto p = pdao.consultar(consulta.getInt("IdProducto"));
+                movimientos.setProducto((Producto) p);
+
                 movimientos.setCantidad(consulta.getInt("Cantidad"));
             }
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error en la consulta:" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);
@@ -169,8 +168,9 @@ public class MovimientosDAO extends Conexion implements interfaceMovimientoDAO
     @Override
     public ArrayList<Movimientos> consultarAll(Producto producto)
     {
-    Connection miConex = null;
+        Connection miConex = null;
         ArrayList<Movimientos> muchosMovimientos = null;
+        
         try
         {
             String misql = ("SELECT * FROM TMovimientos ;");
@@ -189,7 +189,7 @@ public class MovimientosDAO extends Conexion implements interfaceMovimientoDAO
             }
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error en la consulta de todos:" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);

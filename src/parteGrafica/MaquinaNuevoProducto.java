@@ -82,7 +82,6 @@ public class MaquinaNuevoProducto extends JFrame
     {
         bCancelar.addActionListener(new ActionListener()
         {
-
             @Override
             public void actionPerformed(ActionEvent ae)
             {
@@ -106,7 +105,6 @@ public class MaquinaNuevoProducto extends JFrame
         });
         bAceptar.addActionListener(new ActionListener()
         {
-
             @Override
             public void actionPerformed(ActionEvent ae)
             {
@@ -124,7 +122,6 @@ public class MaquinaNuevoProducto extends JFrame
                 } catch (Exception e)
                 {
                 }
-
             }
         });
     }

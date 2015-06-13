@@ -46,23 +46,23 @@ import publico.ActualizarProductos;
  */
 public class MaquinaRoot extends JFrame
 {
-    
-    static DineroDAO dineroDAO = new DineroDAO();
-    static ProductoDAO productoDAO = new ProductoDAO();
-    
-    JPanel pdinero = new JPanel();
-    JPanel pproducto = new JPanel();
-    static JTextField tx5 = new JTextField();
-    static JTextField tx2 = new JTextField();
-    static JTextField tx1 = new JTextField();
-    static JTextField tx05 = new JTextField();
-    static JTextField tx02 = new JTextField();
-    static JTextField tx01 = new JTextField();
+
+    private static DineroDAO dineroDAO = new DineroDAO();
+    private static ProductoDAO productoDAO = new ProductoDAO();
+
+    private static JPanel pdinero = new JPanel();
+    private static JPanel pproducto = new JPanel();
+    private static JTextField tx5 = new JTextField();
+    private static JTextField tx2 = new JTextField();
+    private static JTextField tx1 = new JTextField();
+    private static JTextField tx05 = new JTextField();
+    private static JTextField tx02 = new JTextField();
+    private static JTextField tx01 = new JTextField();
     static ArrayList<JTextField> listxt = new ArrayList();
-    
+
     static JButton retirarDinero = new JButton("Retirar");
-    static JButton consuDinero = new JButton("Consultar");
-    
+    private static JButton consuDinero = new JButton("Consultar");
+
     public MaquinaRoot()
     {
         setLayout(new GridLayout(1, 2));
@@ -83,7 +83,7 @@ public class MaquinaRoot extends JFrame
             @Override
             public void actionPerformed(ActionEvent ae)
             {
-                Producto p = (Producto)jcb.getSelectedItem();
+                Producto p = (Producto) jcb.getSelectedItem();
                 try
                 {
                     ActualizarProductos.meterProducto(p, Integer.parseInt(jtfNumProd.getText()));
@@ -137,7 +137,7 @@ public class MaquinaRoot extends JFrame
          }
          });*/
     }
-    
+
     private static void anyadirFuncionalidadDinero()
     {
         // añadimos los JTextField al ArrayList para trabajar más comodo
@@ -154,7 +154,7 @@ public class MaquinaRoot extends JFrame
         {
             l.setName((i++) + "");
         }
-        
+
         ActionListener comprobarMonedas = new ActionListener()
         {
             @Override
@@ -163,7 +163,7 @@ public class MaquinaRoot extends JFrame
                 // Consultamos la BBDD para saber cuantas monedas hay, 
                 // para añadir o retirar
                 ArrayList<Dinero> dineros = dineroDAO.consultarAll();
-                
+
                 for (int j = 0; j < listxt.size(); j++)
                 {
                     try
@@ -187,12 +187,12 @@ public class MaquinaRoot extends JFrame
                                 dineroDAO.modificacion(dineros.get(j));
                             }
                         }
-                        
+
                     } catch (Exception e)
                     {
                         System.out.println(e.getStackTrace().getClass());
                     }
-                    
+
                 }
             }
         };
@@ -212,12 +212,12 @@ public class MaquinaRoot extends JFrame
                 JOptionPane.showMessageDialog(null, text);
             }
         });
-        
+
     }
-    
+
     private static void consultarProductos(JComboBox jcb)
     {
-        
+
         ArrayList<Producto> misProductos = productoDAO.consultarAll();
         for (Producto p : misProductos)
         {

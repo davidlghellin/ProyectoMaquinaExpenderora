@@ -32,7 +32,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import pruebas.pProducto;
+import pruebasConsola.pProducto;
 import utils.Imagen;
 
 /**

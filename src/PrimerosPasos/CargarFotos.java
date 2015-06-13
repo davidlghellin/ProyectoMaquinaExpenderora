@@ -20,8 +20,8 @@ package PrimerosPasos;
 import DAO.ProductoDAO;
 import dominio.Producto;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.JFileChooser;
 import utils.Imagen;
 
 /**
@@ -30,7 +30,7 @@ import utils.Imagen;
  *
  * @author David López González
  */
-public class cf
+public class CargarFotos
 {
 
     private static void cargarFoto(File file, Producto p)
@@ -53,14 +53,13 @@ public class cf
         }
     }
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws IOException
     {
         ProductoDAO proDAO = new ProductoDAO();
         ArrayList<Producto> muchosP = new ArrayList<Producto>();
         muchosP = proDAO.consultarAll();
         for (Producto p : muchosP)
         {
-            System.out.println(p.getNombre());
             comprobarFoto(p);
         }
     }

@@ -17,17 +17,15 @@
  */
 package DAO;
 
+import dominio.Movimientos;
 import dominio.Producto;
 import inerfaceDAO.Conexion;
 import inerfaceDAO.interfaceProductoDAO;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -56,7 +54,7 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
             ps.executeUpdate();
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error en el alta:" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);
@@ -67,7 +65,10 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
     public void baja(int codigo)
     {
         Connection miConex = null;
-//eliminiar antes los movimientos
+// Eliminiar antes los movimientos, si fuera necesarío
+        // Podriamos quitar este método para que no se puedan eliminar los productos
+        // ya que no hace falta borrar los productos, no se ponen existencias y solucionado
+
         try
         {
             miConex = Conectar();
@@ -78,7 +79,7 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
             ps.executeUpdate();
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error al borrar:" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);
@@ -107,7 +108,7 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
             ps.executeUpdate();
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error al actualizar:" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);
@@ -140,7 +141,7 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
             }
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error en la consulta:" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);
@@ -174,7 +175,7 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
             }
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error en la consulta:" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);
@@ -207,7 +208,7 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
             }
         } catch (SQLException ex)
         {
-            Logger.getLogger(DineroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error en la consulta de todos:" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);
