@@ -28,6 +28,9 @@ import utils.Imagen;
  * Ejecutar este método una vez, al cargar el spript MySql. Se encargará de
  * poner las fotos a los productos
  *
+ * @see
+ * <a href="https://github.com/davidlghellin/ProyectoMaquinaExpenderora">https://github.com/davidlghellin/ProyectoMaquinaExpenderora</a>
+ * @version 0.9 13 de Junio de 2015
  * @author David López González
  */
 public class CargarFotos

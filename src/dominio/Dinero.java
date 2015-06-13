@@ -6,7 +6,9 @@
 package dominio;
 
 /**
- *
+ * @see
+ * <a href="https://github.com/davidlghellin/ProyectoMaquinaExpenderora">https://github.com/davidlghellin/ProyectoMaquinaExpenderora</a>
+ * @version 0.9 13 de Junio de 2015
  * @author David López González
  */
 public class Dinero
@@ -29,8 +31,9 @@ public class Dinero
     public String getNombre(){return nombre;}
     public int getExistencias(){return existencias;}
     public float getValor(){return valor;}
-    public void setCodigo(int codigo)       {this.codigo = codigo;}
-    public void setNombre(String nombre)    {this.nombre = nombre;}
+    
+    public void setCodigo(int codigo){this.codigo = codigo;}
+    public void setNombre(String nombre){this.nombre = nombre;}
     public void setExistencias(int existencias){this.existencias = existencias;}
     public void setValor(float valor){this.valor = valor;}
 }

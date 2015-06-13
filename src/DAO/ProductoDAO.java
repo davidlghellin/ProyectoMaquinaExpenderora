@@ -17,7 +17,6 @@
  */
 package DAO;
 
-import dominio.Movimientos;
 import dominio.Producto;
 import inerfaceDAO.Conexion;
 import inerfaceDAO.interfaceProductoDAO;
@@ -28,12 +27,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- *
+ * @see
+ * <a href="https://github.com/davidlghellin/ProyectoMaquinaExpenderora">https://github.com/davidlghellin/ProyectoMaquinaExpenderora</a>
+ * @version 0.9 13 de Junio de 2015
  * @author David López González
  */
 public class ProductoDAO extends Conexion implements interfaceProductoDAO
 {
 
+    /**
+     * Alta en la BBDD
+     *
+     * @param p Objeto producto que se dará de alta
+     */
     @Override
     public void alta(Producto p)
     {
@@ -61,11 +67,18 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
         }
     }
 
+    /**
+     * Baja de una tupla producto en la BBDD
+     *
+     * @see MovimientosDAO puede que haya que eliminar antes los movimientos
+     * asociados
+     * @param codigo Entero que es el id que eliminamos
+     */
     @Override
     public void baja(int codigo)
     {
         Connection miConex = null;
-// Eliminiar antes los movimientos, si fuera necesarío
+        // Eliminiar antes los movimientos, si fuera necesarío
         // Podriamos quitar este método para que no se puedan eliminar los productos
         // ya que no hace falta borrar los productos, no se ponen existencias y solucionado
 
@@ -86,6 +99,11 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
         }
     }
 
+    /**
+     * Modificación de los valores de una tupla en la BBDD
+     *
+     * @param p Objeto producto que queremos modificar
+     */
     @Override
     public void modificacion(Producto p)
     {
@@ -115,6 +133,12 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
         }
     }
 
+    /**
+     * Consulta a la BBDD
+     *
+     * @param texto String por el cuál haremos la consulta a la BBDD
+     * @return Producto
+     */
     @Override
     public Producto consultar(String texto)
     {
@@ -149,6 +173,12 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
         return producto;
     }
 
+    /**
+     * Consulta a la BBDD
+     *
+     * @param num Entero por el cuál haremos la consulta a la BBDD
+     * @return Producto
+     */
     @Override
     public Producto consultar(int num)
     {
@@ -183,6 +213,11 @@ public class ProductoDAO extends Conexion implements interfaceProductoDAO
         return producto;
     }
 
+    /**
+     * Consulta a la BBDD
+     *
+     * @return ArrayList de Producto
+     */
     @Override
     public ArrayList<Producto> consultarAll()
     {

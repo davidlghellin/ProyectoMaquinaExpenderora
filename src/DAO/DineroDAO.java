@@ -24,12 +24,19 @@ import java.sql.*;
 import java.util.ArrayList;
 
 /**
- *
+ * @see
+ * <a href="https://github.com/davidlghellin/ProyectoMaquinaExpenderora">https://github.com/davidlghellin/ProyectoMaquinaExpenderora</a>
+ * @version 0.9 13 de Junio de 2015
  * @author David López González
  */
 public class DineroDAO extends Conexion implements interfaceDineroDAO
 {
 
+    /**
+     * Alta en la BBDD
+     *
+     * @param d Objeto dinero que se dará de alta
+     */
     @Override
     public void alta(Dinero d)
     {
@@ -55,6 +62,11 @@ public class DineroDAO extends Conexion implements interfaceDineroDAO
         }
     }
 
+    /**
+     * Baja de una tupla dinero en la BBDD
+     *
+     * @param codigo Entero que es el id que eliminamos
+     */
     @Override
     public void baja(int codigo)
     {
@@ -70,13 +82,18 @@ public class DineroDAO extends Conexion implements interfaceDineroDAO
             ps.executeUpdate();
         } catch (SQLException ex)
         {
-        System.err.println("Error al borrar una tupla:" + ex.getMessage());
-       } finally
+            System.err.println("Error al borrar una tupla:" + ex.getMessage());
+        } finally
         {
             Desconectar(miConex);
         }
     }
 
+    /**
+     * Modificación de los valores de una tupla en la BBDD
+     *
+     * @param d Objeto dinero que queremos modificar
+     */
     @Override
     public void modificacion(Dinero d)
     {
@@ -103,6 +120,12 @@ public class DineroDAO extends Conexion implements interfaceDineroDAO
         }
     }
 
+    /**
+     * Consulta a la BBDD
+     *
+     * @param texto String por el cuál haremos la consulta a la BBDD
+     * @return Dinero
+     */
     @Override
     public Dinero consultar(String texto)
     {
@@ -135,6 +158,12 @@ public class DineroDAO extends Conexion implements interfaceDineroDAO
         return dinero;
     }
 
+    /**
+     * Consulta a la BBDD
+     *
+     * @param num Entero por el cuál haremos la consulta a la BBDD
+     * @return Dinero
+     */
     @Override
     public Dinero consultar(int num)
     {
@@ -159,7 +188,7 @@ public class DineroDAO extends Conexion implements interfaceDineroDAO
             }
         } catch (SQLException ex)
         {
-             System.err.println("Error en la consulta:" + ex.getMessage());
+            System.err.println("Error en la consulta:" + ex.getMessage());
         } finally
         {
             Desconectar(miConex);
@@ -167,6 +196,11 @@ public class DineroDAO extends Conexion implements interfaceDineroDAO
         return dinero;
     }
 
+    /**
+     * Consulta a la BBDD
+     *
+     * @return ArrayList de Dinero
+     */
     @Override
     public ArrayList<Dinero> consultarAll()
     {
@@ -191,8 +225,8 @@ public class DineroDAO extends Conexion implements interfaceDineroDAO
             }
         } catch (SQLException ex)
         {
-             System.err.println("Error en la consulta de todos:" + ex.getMessage());
-         } finally
+            System.err.println("Error en la consulta de todos:" + ex.getMessage());
+        } finally
         {
             Desconectar(miConex);
         }

@@ -26,13 +26,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 /**
- *
+ * @see
+ * <a href="https://github.com/davidlghellin/ProyectoMaquinaExpenderora">https://github.com/davidlghellin/ProyectoMaquinaExpenderora</a>
+ * @version 0.9 13 de Junio de 2015
  * @author David López González
  */
 public class MovimientosDAO extends Conexion implements interfaceMovimientoDAO
 {
 
+    /**
+     * Alta en la BBDD
+     *
+     * @param m Objeto movimiento que se dará de alta
+     */
     @Override
     public void alta(Movimientos m)
     {
@@ -57,11 +65,16 @@ public class MovimientosDAO extends Conexion implements interfaceMovimientoDAO
         }
     }
 
+    /**
+     * Baja de una tupla movimiento en la BBDD
+     *
+     * @param codigo Entero que es el id que eliminamos
+     */
     @Override
     public void baja(int codigo)
     {
         Connection miConex = null;
-        
+
         try
         {
             miConex = Conectar();
@@ -87,7 +100,7 @@ public class MovimientosDAO extends Conexion implements interfaceMovimientoDAO
     public void baja(Producto producto)
     {
         Connection miConex = null;
-        
+
         try
         {
             miConex = Conectar();
@@ -105,6 +118,11 @@ public class MovimientosDAO extends Conexion implements interfaceMovimientoDAO
         }
     }
 
+    /**
+     * Modificación de los valores de una tupla en la BBDD
+     *
+     * @param m Objeto movimiento que queremos modificar
+     */
     @Override
     public void modificacion(Movimientos m)
     {
@@ -130,6 +148,12 @@ public class MovimientosDAO extends Conexion implements interfaceMovimientoDAO
         }
     }
 
+    /**
+     * Consulta a la BBDD
+     *
+     * @param idMovientos Entero por el cuál haremos la consulta a la BBDD
+     * @return Movimiento
+     */
     @Override
     public Movimientos consultar(int idMovientos)
     {
@@ -165,12 +189,17 @@ public class MovimientosDAO extends Conexion implements interfaceMovimientoDAO
         return movimientos;
     }
 
+    /**
+     * Consulta a la BBDD
+     *
+     * @return ArrayList de Movimientos
+     */
     @Override
     public ArrayList<Movimientos> consultarAll(Producto producto)
     {
         Connection miConex = null;
         ArrayList<Movimientos> muchosMovimientos = null;
-        
+
         try
         {
             String misql = ("SELECT * FROM TMovimientos ;");
