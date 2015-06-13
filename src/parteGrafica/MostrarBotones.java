@@ -22,8 +22,6 @@ import DAO.ProductoDAO;
 import dominio.Dinero;
 import dominio.Producto;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -36,7 +34,9 @@ import pruebasConsola.pProducto;
 import utils.Imagen;
 
 /**
- *
+ * @see
+ * <a href="https://github.com/davidlghellin/ProyectoMaquinaExpenderora">https://github.com/davidlghellin/ProyectoMaquinaExpenderora</a>
+ * @version 0.9 13 de Junio de 2015
  * @author David López González
  */
 public class MostrarBotones

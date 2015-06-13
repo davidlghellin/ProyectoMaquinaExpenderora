@@ -42,7 +42,9 @@ import publico.ActualizarDinero;
 import publico.ActualizarProductos;
 
 /**
- *
+ * @see
+ * <a href="https://github.com/davidlghellin/ProyectoMaquinaExpenderora">https://github.com/davidlghellin/ProyectoMaquinaExpenderora</a>
+ * @version 0.9 13 de Junio de 2015
  * @author David López González
  */
 public class MaquinaJFrame extends JFrame
