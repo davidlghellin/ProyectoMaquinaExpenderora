@@ -27,7 +27,7 @@ CREATE TABLE TMovimientos(
     CONSTRAINT ActualizarMaquina FOREIGN KEY (IdProducto) REFERENCES TProducto(Codigo)
 )CHARACTER SET utf8 COLLATE utf8_spanish_ci;
 
-INSERT INTO TDinero (Nombre,Existencias,Valor) VALUES ("Billete 5",10,5);   #20 €
+INSERT INTO TDinero (Nombre,Existencias,Valor) VALUES ("Billete 5",10,5);   #50 €
 INSERT INTO TDinero (Nombre,Existencias,Valor) VALUES ("Moneda 2",10,2);    #20 €
 INSERT INTO TDinero (Nombre,Existencias,Valor) VALUES ("Moneda 1",20,1);    #20 €
 INSERT INTO TDinero (Nombre,Existencias,Valor) VALUES ("Moneda 0.5",20,0.5);#10 €
@@ -53,6 +53,3 @@ INSERT INTO TProducto (Nombre,Descripcion,Precio,Existencias) VALUES ("Monster",
 INSERT INTO TProducto (Nombre,Descripcion,Precio,Existencias) VALUES ("Monster","Bebida energética",2.2,0);
 INSERT INTO TProducto (Nombre,Descripcion,Precio,Existencias) VALUES ("Agua","Agua refrescante",1.1,0);
 INSERT INTO TProducto (Nombre,Descripcion,Precio,Existencias) VALUES ("Agua","Agua refrescante",1.1,0);
-
-
-#INSERT INTO TMovimientos (IdProducto,Cantidad) VALUES (1,9);
