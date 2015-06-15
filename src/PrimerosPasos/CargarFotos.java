@@ -36,6 +36,12 @@ import utils.Imagen;
 public class CargarFotos
 {
 
+    /**
+     * Método que carga una foto y la asocia a un producto
+     *
+     * @param file fichero que contiene la foto
+     * @param p Producto al que le pondremos la foto
+     */
     private static void cargarFoto(File file, Producto p)
     {
         byte[] buf = null;
@@ -43,6 +49,13 @@ public class CargarFotos
         p.setImagen(buf);
     }
 
+    /**
+     * Método que comprueba las fotos contenidas en la carpeta "Fotos" que
+     * tendrán un número y las carga en la BBDD a los productos que tengán ese
+     * número
+     *
+     * @param p
+     */
     private static void comprobarFoto(Producto p)
     {
         File file;
@@ -56,6 +69,13 @@ public class CargarFotos
         }
     }
 
+    /**
+     * Método ejecutable, que comprueba el listado de productos que tenemos en
+     * la BBDD y le pone la foto correspondiente
+     *
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException
     {
         ProductoDAO proDAO = new ProductoDAO();

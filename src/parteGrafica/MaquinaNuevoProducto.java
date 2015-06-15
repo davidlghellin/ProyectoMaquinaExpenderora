@@ -53,7 +53,7 @@ public class MaquinaNuevoProducto extends JFrame
     private static final JButton bAceptar = new JButton("Aceptar");
     private static final JButton bCancelar = new JButton("Cancelar");
 
-    private static final JFileChooser jf = new JFileChooser();
+    private static JFileChooser jf = new JFileChooser();
     private static File f;
 
     MaquinaNuevoProducto()
@@ -82,6 +82,7 @@ public class MaquinaNuevoProducto extends JFrame
 
     private static void anyadirFuncionalidad()
     {
+        // Seteamos a las opciones por defecto
         bCancelar.addActionListener(new ActionListener()
         {
             @Override
@@ -94,17 +95,17 @@ public class MaquinaNuevoProducto extends JFrame
                 f = null;
             }
         });
+        // Cargamos la imagen
         bSelecionarImagen.addActionListener(new ActionListener()
         {
-
             @Override
             public void actionPerformed(ActionEvent ae)
             {
-
                 jf.showOpenDialog(null);
                 f = jf.getSelectedFile();
             }
         });
+        // Aceptamos los valores pasados
         bAceptar.addActionListener(new ActionListener()
         {
             @Override

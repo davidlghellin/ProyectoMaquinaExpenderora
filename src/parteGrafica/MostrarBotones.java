@@ -73,8 +73,8 @@ public class MostrarBotones
     }
 
     /**
-     * Método para pintar los botones y asociar el nombre a los botones. Se
-     * pintarán los botones en un JPanel
+     * Método para pintar los botones y asociar el nombre a los botones, Se
+     * pintarán los botones en un JPanel.
      *
      * @param botones
      * @param panel2

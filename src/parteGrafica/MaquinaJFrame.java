@@ -165,6 +165,9 @@ public class MaquinaJFrame extends JFrame
         }
     };
 
+    /**
+     * Constructor en el que inicializará todos los componentes de la máquina
+     */
     public MaquinaJFrame()
     {
         //ponemos el JMenu y sus componentes asociados en el JFrame
@@ -173,7 +176,9 @@ public class MaquinaJFrame extends JFrame
         f.add(menuRoot);
         f.add(menuInforme);
         f.add(menuSalir);
+        // Ponemos salir y entrar a root
         ponerActionMenu();
+        // Generamos los informes
         informes();
 
         //establemos el layout para añadir dos paneles 
@@ -250,6 +255,10 @@ public class MaquinaJFrame extends JFrame
         MostrarBotones.pintarBotonesProductos(botones, panel2);
     }
 
+    /**
+     * Creará los informes, si coincide con la contraseña, esta contraseña se indicará aquí.
+     * Se podría poner en una base de datos para usuarios root
+     */
     public static void informes()
     {
         menuInforme.addActionListener(new ActionListener()
@@ -273,6 +282,9 @@ public class MaquinaJFrame extends JFrame
         });
     }
 
+    /**
+     * Método que abre el JFrame del root para poder administrar los productos
+     */
     public static void ponerActionMenu()
     {
         menuRoot.addActionListener(new ActionListener()
@@ -288,8 +300,6 @@ public class MaquinaJFrame extends JFrame
                 }
             }
         });
-        // TODO Generar informe
-        menuInforme.addActionListener(null);
 
         menuSalir.addActionListener(new ActionListener()
         {

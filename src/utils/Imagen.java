@@ -42,7 +42,7 @@ public class Imagen
 {
 
     /**
-     * le pasas un fichero y este lo prepara para pasarlo a la bbdd
+     * Le pasas un fichero (foto) y este lo prepara para pasarlo a la bbdd
      *
      * @param file
      * @return

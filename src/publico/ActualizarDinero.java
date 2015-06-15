@@ -103,10 +103,11 @@ public class ActualizarDinero
     }
 
     /**
-     * Con este método depositamos dinero en la máquina, sirve tanto para dejar
-     * dinero como para pagar
+     * Depositamos dinero en la máquina, sirve tanto para dejar dinero como para
+     * pagar
      *
-     * @param num
+     * @param text nombre de la moneda
+     * @param num cantidad
      */
     private static void auxpagar(String text, int num)
     {
@@ -114,6 +115,14 @@ public class ActualizarDinero
         midinero.setExistencias(midinero.getExistencias() + num);
         dineroDao.modificacion(midinero);
     }
+
+    /**
+     * Depositamos dinero en la máquina, sirve tanto para dejar dinero como para
+     * pagar
+     *
+     * @param n identificador de la moneneda en la BBDD
+     * @param num cantidad
+     */
     private static void auxpagar(int n, int num)
     {
         Dinero midinero = dineroDao.consultar(n);
@@ -138,7 +147,8 @@ public class ActualizarDinero
         int intDinero = (int) (dinero * 100);
         pagarCaja(intPrecio, intDinero);
     }
-     /**
+
+    /**
      * Método que comprueba el dinero del producto y lo que se introduce en la
      * caja para devolver el menor número de monedas, para ello debemos tener en
      * cuenta la cantidad de monedas que hay en la máquina expendedora
@@ -162,12 +172,13 @@ public class ActualizarDinero
 
         // Trabajaremos con enteros, ya que con float se pierde precisión
         // Precio del producto
-        int intPrecio = precio ;
+        int intPrecio = precio;
         // Dinero introducido en la máquina
-        int intDinero = dinero ;
+        int intDinero = dinero;
         int aux = intDinero - intPrecio;
         if (aux > 0)    // Hay que devolver 
         {
+            // Saber los billetes de 5€ que tenemos y podemos devolver
             while (aux - 500 >= 0 && monedasCaja[0] > 0)
             {
                 aux -= 500;         // Restamos 5€
@@ -181,24 +192,28 @@ public class ActualizarDinero
                 monedasCaja[1]--;   // Quitamos una moneda de la caja
                 monedas[1]++;       // Incrementamos las que hay que devolver
             }
+            // Saber las monedas de 1€ que tenemos y podemos devolver
             while (aux - 100 >= 0 && monedasCaja[2] > 0)
             {
                 aux -= 100;         // Restamos 1€
                 monedasCaja[2]--;   // Quitamos una moneda de la caja
                 monedas[2]++;       // Incrementamos las que hay que devolver
             }
+            // Saber las monedas de 0.5€ que tenemos y podemos devolver
             while (aux - 50 >= 0 && monedasCaja[3] > 0)
             {
                 aux -= 50;           // Restamos 0.5€
                 monedasCaja[3]--;   // Quitamos una moneda de la caja
                 monedas[3]++;       // Incrementamos las que hay que devolver
             }
+            // Saber las monedas de 0.2€ que tenemos y podemos devolver
             while (aux - 20 >= 0 && monedasCaja[4] > 0)
             {
                 aux -= 20;          // Restamos 0.2€
                 monedasCaja[4]--;   // Quitamos una moneda de la caja
                 monedas[4]++;       // Incrementamos las que hay que devolver
             }
+            // Saber las monedas de 0.1€ que tenemos y podemos devolver
             while (aux - 10 >= 0 && monedasCaja[5] > 0)
             {
                 aux -= 10;          // Restamos 0.1€
@@ -206,21 +221,22 @@ public class ActualizarDinero
                 monedas[5]++;       // Incrementamos las que hay que devolver
             }
         }
-        // 
-        i=1;
+        // Actualización del pago y de la BBDD
+        i = 1;
         for (int n : monedas)
         {
             auxpagar(i++, -n);
         }
         return monedas;
     }
-    
-    
+
     /**
      * Método que sirve para saber el número de monedas que tendríamos que
      * devolver No usaremos este ya que necesitamos saber tanto el número de
      * monedas que hay en la caja, como el valor del precio del producto
      *
+     * @deprecated No tiene en cuenta las monedas en caja, y usa float por lo
+     * que pierde en en rededondeo
      * @param num
      */
     public static void pagar(float num)
